@@ -84,13 +84,12 @@
         if (name === 'kinobase') return proxy_apn;
         if (name === 'cdnmovies') return proxy_other ? proxy_secret : proxy_apn;
         if (name === 'videodb') return user_proxy2;
-        if (name === 'zetflix') return user_proxy2;
+        if (name === 'videoaz') return user_proxy2;
         if (name === 'fancdn') return user_proxy2;
         if (name === 'redheadsound') return proxy_other ? proxy_secret : proxy_apn;
         if (name === 'anilibria') return user_proxy2;
         if (name === 'kodik') return user_proxy3;
-        if (name === 'videoaz') return user_proxy2;
-        
+        if (name === 'kinopub') return user_proxy2;
       }
 
       return '';
@@ -4215,15 +4214,15 @@
       }
     }
 
-    function zetflix(component, _object) {
+    function videoaz(component, _object) {
       var network = new Lampa.Reguest();
       var extract = [];
       var object = _object;
       var select_title = '';
       var select_id = '';
       var prefer_http = Lampa.Storage.field('online_mod_prefer_http') === true;
-      component.proxy('zetflix');
-      var embed = (prefer_http ? 'http://bwa-cloud.cfhttp.top/' : 'https://bwa-cloud.apn.monster/') + 'lite/zetflix';
+      component.proxy('videoaz');
+      var embed = (prefer_http ? 'http://bwa-cloud.cfhttp.top/' : 'https://bwa-cloud.apn.monster/') + 'lite/videoaz';
       var filter_items = {};
       var choice = {
         season: 0,
@@ -4352,7 +4351,7 @@
             return {
               label: item.label,
               quality: quality ? parseInt(quality[1]) : NaN,
-              file: component.proxyStream(link, 'zetflix')
+              file: component.proxyStream(link, 'videoaz')
             };
           });
           items.sort(function (a, b) {
@@ -13152,13 +13151,13 @@
       }
     }
 
-    function videoaz(component, _object) {
+    function kinopub(component, _object) {
       var network = new Lampa.Reguest();
       var extract = {};
       var object = _object;
       var select_title = '';
       var prefer_http = Lampa.Storage.field('online_mod_prefer_http') === true;
-      var prox = component.proxy('videoaz');
+      var prox = component.proxy('kinopub');
       var embed = prox + 'https://api.srvkp.com/v1/';
       var token = Utils.decodeSecret([76, 91, 92, 0, 67, 85, 66, 68, 0, 95, 84, 92, 2, 11, 77, 64, 0, 3, 94, 91, 84, 68, 70, 83, 13, 92, 90, 79, 2, 78, 5, 5]);
       var server = 'ru';
@@ -13209,7 +13208,7 @@
         });
       }
 
-      function videoaz_api_search(api, callback, error) {
+      function kinopub_api_search(api, callback, error) {
         network.clear();
         network.timeout(10000);
         network["native"](api, function (json) {
@@ -13336,7 +13335,7 @@
         params = Lampa.Utils.addUrlComponent(params, 'field=title');
         params = Lampa.Utils.addUrlComponent(params, 'q=' + encodeURIComponent(select_title));
         decodeSecretToken(function () {
-          videoaz_api_search(embed + params, function (json) {
+          kinopub_api_search(embed + params, function (json) {
             display(json.items);
           }, error);
         });
@@ -13390,7 +13389,7 @@
       function success(item) {
         var params = Lampa.Utils.addUrlComponent('items/' + item.id, 'access_token=' + token);
         var error = component.empty.bind(component);
-        videoaz_api_search(embed + params, function (json) {
+        kinopub_api_search(embed + params, function (json) {
           if (json.item && (json.item.videos && json.item.videos.length || json.item.seasons && json.item.seasons.length)) {
             component.loading(false);
             extractData(json.item);
@@ -14028,8 +14027,8 @@
         kp: false,
         imdb: false
       }, {
-        name: 'zetflix',
-        title: 'Zetflix',
+        name: 'videoaz',
+        title: 'Videoaz',
         source: new zetflix(this, object),
         search: false,
         kp: true,
@@ -14081,9 +14080,9 @@
           imdb: true
         });
         all_sources.push({
-          name: 'videoaz',
-          title: 'VideoAz',
-          source: new videoaz(this, object),
+          name: 'kinopub',
+          title: 'KinoPub',
+          source: new kinopub(this, object),
           search: true,
           kp: false,
           imdb: true,
@@ -15175,8 +15174,8 @@
     Lampa.Storage.set('online_mod_proxy_videocdn', 'false');
     Lampa.Storage.set('online_mod_proxy_collaps', 'false');
     Lampa.Storage.set('online_mod_proxy_videodb', 'false');
-    Lampa.Storage.set('online_mod_proxy_zetflix', 'false');
-    Lampa.Storage.set('online_mod_proxy_videoaz', 'true');
+    Lampa.Storage.set('online_mod_proxy_videoaz', 'false');
+    Lampa.Storage.set('online_mod_proxy_kinopub', 'true');
     Lampa.Storage.set('online_mod_proxy_alloha', 'false');
     Lampa.Storage.set('online_mod_proxy_hdvb', 'false');
     Lampa.Storage.set('online_mod_proxy_kp', 'false');
@@ -15192,13 +15191,13 @@
     Lampa.Params.trigger('online_mod_proxy_collaps', false);
     Lampa.Params.trigger('online_mod_proxy_cdnmovies', false);
     Lampa.Params.trigger('online_mod_proxy_videodb', false);
-    Lampa.Params.trigger('online_mod_proxy_zetflix', false);
+    Lampa.Params.trigger('online_mod_proxy_videoaz', false);
     Lampa.Params.trigger('online_mod_proxy_fancdn', false);
     Lampa.Params.trigger('online_mod_proxy_redheadsound', false);
     Lampa.Params.trigger('online_mod_proxy_cdnvideohub', false);
     Lampa.Params.trigger('online_mod_proxy_anilibria', false);
     Lampa.Params.trigger('online_mod_proxy_kodik', false);
-    Lampa.Params.trigger('online_mod_proxy_videoaz', false);
+    Lampa.Params.trigger('online_mod_proxy_kinopub', false);
     Lampa.Params.trigger('online_mod_proxy_alloha', false);
     Lampa.Params.trigger('online_mod_proxy_hdvb', false);
     Lampa.Params.trigger('online_mod_proxy_kp', false);
@@ -15224,7 +15223,7 @@
 
     if (Lampa.Storage.get('online_mod_proxy_reset', '') != 1) {
       Lampa.Storage.set('online_mod_proxy_videodb', 'false');
-      Lampa.Storage.set('online_mod_proxy_zetflix', 'false');
+      Lampa.Storage.set('online_mod_proxy_videoaz', 'false');
       Lampa.Storage.set('online_mod_proxy_anilibria', 'false');
 
       if (Lampa.Platform.is('android') || isLocal || Lampa.Storage.field('online_mod_iframe_proxy') === true) {
